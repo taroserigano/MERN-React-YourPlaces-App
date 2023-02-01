@@ -34,9 +34,13 @@ app.use((req, res, next) => {
   throw error;
 });
 
+// this is middleware to handle rollback
+// rollback, because like when there's a dupe pic, or account,
+// the fs.unlink will delete the pic 
 app.use((error, req, res, next) => {
   if (req.file) {
-    fs.unlink(req.file.path, err => {
+    // delete the file (unlink) 
+    fs.unlink(req.file.path, err => { // this callback happens after deletion is done 
       console.log(err);
     });
   }
